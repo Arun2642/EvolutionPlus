@@ -16,8 +16,9 @@ public interface CreatureAction {
 
 		@Override
 		public void doAction(Creature creature, double modifier, double timeStep) {
+			//I've overridden hue setting to allow for a visual indication of the creature's infection status
 			//creature.setHue(Math.abs(modifier) % 1.0f);
-			creature.setHue(0.5 % 1.0f);
+			//creature.setHue(0.5 % 1.0f);
 		}
 	}
 

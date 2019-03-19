@@ -7,4 +7,9 @@ public class Virus{
 	public double receptorPreference = Math.random();
 	public double dangerLevel = 0.1;
 	private boolean exists = true;
+	
+	public Virus(Tile tile){
+		tile.addVirusToTile(this);
+	}
+	
 }

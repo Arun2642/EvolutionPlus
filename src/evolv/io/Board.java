@@ -370,6 +370,14 @@ public class Board {
 		 * rocks.get(i).collide(timeStep*OBJECT_TIMESTEPS_PER_YEAR); }
 		 */
 		randomSpawnCreature(false);
+		randomVirusSpawn();
+		randomVirusSpawn();
+		randomVirusSpawn();
+		randomVirusSpawn();
+		randomVirusSpawn();
+		randomVirusSpawn();
+		randomVirusSpawn();
+		randomVirusSpawn();
 		for (int i = 0; i < creatures.size(); i++) {
 			Creature me = creatures.get(i);
 			me.collide(timeStep);
@@ -564,7 +572,10 @@ public class Board {
 	}
 	
 	private void randomVirusSpawn(){
-		creatures.add(new Creature(this.evolvioColor, this));
+		int r1 = (int) (Math.random() * (tiles.length));
+		int r2 = (int) (Math.random() * (tiles.length));
+		Tile tileToPass = tiles[r1][r2];
+		viruses.add(new Virus(tileToPass));
 	}
 
 	public List<SoftBody> getSoftBodiesInPosition(int x, int y) {

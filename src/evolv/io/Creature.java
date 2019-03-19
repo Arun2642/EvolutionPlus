@@ -33,19 +33,21 @@ public class Creature extends SoftBody {
 	private ArrayList<Virus> viruses = new ArrayList<Virus>();
 
 	// TODO can the size of these constructors be reduced?
-
+	
 	public Creature(EvolvioColor evolvioColor, Board board) {
 		this(evolvioColor, board, evolvioColor.random(0, Configuration.BOARD_WIDTH),
 				evolvioColor.random(0, board.getBoardHeight()), 0, 0,
 				evolvioColor.random(Configuration.MINIMUM_CREATURE_ENERGY, Configuration.MAXIMUM_CREATURE_ENERGY), 1,
 				evolvioColor.random(0, 1), 1, 1, evolvioColor.random(0, 2 * EvolvioColor.PI), 0, "", "[PRIMORDIAL]",
 				true, null, 1, evolvioColor.random(0, 1), new double[Configuration.NUM_EYES], new double[Configuration.NUM_EYES]);
+		this.setHue(0.5 % 1.0f);
 	}
 	public Creature(EvolvioColor evolvioColor, Board board, double tpx, double tpy, double tvx, double tvy,
 			double tenergy, double tdensity, double thue, double tsaturation, double tbrightness, double rot,
 			double tvr, String tname, String tparents, boolean mutateName, Brain brain, int tgen, double tmouthHue, double[] teyeDistances, double[] teyeAngles) {
 		super(evolvioColor, board, tpx, tpy, tvx, tvy, tenergy, tdensity, thue, tsaturation, tbrightness);
 		this.evolvioColor = evolvioColor;
+		this.setHue(0.5 % 1.0f);
 
 		if (brain == null) {
 			brain = new Brain(this.evolvioColor, null, null);
@@ -135,7 +137,7 @@ public class Creature extends SoftBody {
 			}
 		}
 	}
-
+	//This is a test comment for github
 	public void drawMouth(Board board, float scaleUp, double radius, double rotation, float camZoom, double mouthHue) {
 		this.evolvioColor.noFill();
 		this.evolvioColor.strokeWeight(Configuration.CREATURE_STROKE_WEIGHT);
@@ -203,6 +205,11 @@ public class Creature extends SoftBody {
 		return getBoard().getTile(x, y);
 	}
 
+	private void becomeInfected(Virus virus){
+		viruses.add(virus);
+		this.setHue(1);
+	}
+	
 	public void eat(double attemptedAmount, double timeStep) {
 		/*
 		 * The faster you're moving, the less efficiently you can eat.
@@ -214,6 +221,14 @@ public class Creature extends SoftBody {
 			loseEnergy(-attemptedAmount * Configuration.EAT_ENERGY * timeStep);
 		} else {
 			Tile coveredTile = getRandomCoveredTile();
+			int infectionLevel = coveredTile.getInfectionLevel();
+			if (infectionLevel > 0){
+				int r1 = (int) (Math.random() * (100));
+				//if(r1 > infectionLevel){
+					Virus infectingVirus = coveredTile.getRandomVirus();
+					this.becomeInfected(infectingVirus);
+				//}
+			}
 			// TODO can pow be replaced with something faster?
 			double foodToEat = coveredTile.getFoodLevel()
 					* (1 - Math.pow((1 - Configuration.EAT_SPEED), amount * timeStep));

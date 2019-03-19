@@ -20,6 +20,24 @@ public class Tile {
 	public ArrayList<Virus> virusArray = new ArrayList<Virus>();
 	
 	private double lastUpdateTime;
+	
+	public void addVirusToTile(Virus virus){
+		virusArray.add(virus);
+	}
+	
+	public void removeRandomVirus(){
+		int r = (int) (Math.random() * (virusArray.size()));
+		virusArray.remove(r);
+	}
+	
+	public int getInfectionLevel(){
+		return virusArray.size();
+	}
+	
+	public Virus getRandomVirus(){
+		int r = (int) (Math.random() * (virusArray.size()));
+		return virusArray.get(r);
+	}
 
 	public Tile(EvolvioColor evolvioColor, Board board, int x, int y, double f, float type) {
 		this.evolvioColor = evolvioColor;
